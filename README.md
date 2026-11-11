@@ -4,6 +4,8 @@ macOS 上一条命令审计、备份并定向清理 Claude（Claude Code / Claud
 
 默认只读。真删除前要求在终端输入 `CONFIRM`，且一定先做逐文件 SHA-256 校验的完整备份。
 
+> 📘 **账号受限或疑似环境污染？** 按标准处置手册操作：**[docs/RUNBOOK.md](docs/RUNBOOK.md)** —— 判定止损 → 保留备份 → 本机清理 → 浏览器清理 → 验证 → 恢复使用（含 [Claude-Cage](https://github.com/Lee-xeo/Claude-Cage) 隔离方案与社区实践对照）→ 回滚。
+
 ## 在新 Mac 上一键执行
 
 ```sh
@@ -61,7 +63,7 @@ python3 -m unittest discover -s tests -v   # 全部测试在临时目录中进�
 
 ## 来源与致谢
 
-清理范围与方法参考了 [Pluviobyte/claude-ban-clean](https://github.com/Pluviobyte/claude-ban-clean)（该仓库未附许可证，本项目为独立实现）。本实现另外修复/增强了：
+清理范围与方法参考了 [Pluviobyte/claude-ban-clean](https://github.com/Pluviobyte/claude-ban-clean)（该仓库未附许可证，本项目为独立实现；其作者的[多账号环境实践长文](https://x.com/Pluvio9yte/status/2116385910879379608)亦收录于 RUNBOOK 附录）。处置手册中的隔离方案参考 [Lee-xeo/Claude-Cage](https://github.com/Lee-xeo/Claude-Cage)（MIT）。本实现另外修复/增强了：
 
 - 进程检测覆盖 npm 安装与 node 包装启动（原实现会漏检 `node`/`claude.exe` 进程）；
 - 崩溃报告按进程名精确匹配且大小写不敏感（原实现的 `Claude_*` 通配会漏掉 CLI 的小写 `claude-*` 报告、误配第三方应用）；

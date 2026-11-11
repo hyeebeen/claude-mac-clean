@@ -23,7 +23,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 TOOL = 'claude-mac-clean'
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 
 DESKTOP_DIR = 'Library/Application Support/Claude'
 
@@ -536,6 +536,14 @@ def print_browser_report(home):
 
 # -------------------------------------------------------------------- audit
 
+VM_MARKERS = ('.lima', '.agent-vm')
+
+
+def vm_environment_note(home):
+    """Names of detected VM environment dirs (Claude-Cage / agent-vm / Lima)."""
+    return [name for name in VM_MARKERS if (home / name).is_dir()]
+
+
 def rel_display(path, home):
     return '~/' + str(path.relative_to(home))
 
@@ -552,6 +560,11 @@ def print_audit(home, plans):
     print('claude-mac-clean %s — 只读审计，不修改任何文件' % VERSION)
     print('Claude 进程: ' + ('未检测到 ✓' if not running else
           '正在运行: ' + ', '.join('pid %d %s' % row for row in running[:5])))
+    vms = vm_environment_note(home)
+    if vms:
+        print('VM 环境: 检测到 ~/' + '、~/'.join(vms) +
+              '（Claude-Cage / agent-vm）；本工具只清理宿主数据，'
+              '各 VM 内部的 Claude 数据需进入 VM 单独清理')
     summary = []
     for scope, moves, edits in plan_summary(home, plans):
         total = sum(tree_size(p) for p in moves)

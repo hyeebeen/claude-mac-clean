@@ -260,5 +260,19 @@ class HumanSizeTests(unittest.TestCase):
         self.assertEqual(c.human_size(136 * 1024 * 1024), '136.0 MB')
 
 
+class VMDetectionTests(unittest.TestCase):
+    def test_detects_cage_and_agent_vm_markers(self):
+        home = make_home()
+        self.assertEqual(c.vm_environment_note(home), [])
+        (home / '.lima').mkdir()
+        (home / '.agent-vm').mkdir()
+        self.assertEqual(c.vm_environment_note(home), ['.lima', '.agent-vm'])
+
+    def test_files_are_not_markers(self):
+        home = make_home()
+        (home / '.lima').write_text('a file, not a dir')
+        self.assertEqual(c.vm_environment_note(home), [])
+
+
 if __name__ == '__main__':
     unittest.main()
