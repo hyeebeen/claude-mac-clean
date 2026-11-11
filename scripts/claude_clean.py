@@ -517,8 +517,7 @@ def print_browser_report(home):
         state = '运行中' if browser['running'] else '未运行'
         print('  %s（%s）' % (browser['name'], state))
         for profile in browser['profiles']:
-            bits = ['Profile ' + profile['profile'] if profile['profile'] != 'Default'
-                    else 'Default']
+            bits = [profile['profile']]
             if profile['indexeddb']:
                 bits.append('IndexedDB: ' + ', '.join(sorted(set(profile['indexeddb']))))
             bits.append(format_cookies(profile['cookies']))
